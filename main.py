@@ -6,7 +6,8 @@ import pyperclip
 # Load data from Excel file (replace 'data.xlsx' with your file path)
 try:
     df = pd.read_excel('SASPROSTER.xlsx')
-    dropdown_options = df['Options'].tolist()  # Assuming 'Options' is the column name
+    dropdown_options = df['OFFICERS'].tolist()  # Assuming 'OFFICERS' is the column name
+    dropdown_car_options = df['CARS'].tolist()  # Assuming 'CARS' is the column name
 except Exception as e:
     print(f"Error loading Excel file: {e}")
     dropdown_options = ["Option 1", "Option 2", "Option 3"]  # Fallback options
@@ -97,12 +98,20 @@ negotiator_dropdown = ttk.Combobox(scene_frame, textvariable=negotiator_var, val
 negotiator_dropdown.grid(row=2, column=1, padx=10, pady=5, sticky="ew")
 negotiator_dropdown.set(dropdown_options[0])  # Default value
 
+# Scene Command dropdown
+scene_command_label = ttk.Label(scene_frame, text="Scene Command:")
+scene_command_label.grid(row=3, column=0, padx=10, pady=5, sticky="w")
+scene_command_var = tk.StringVar()
+scene_command_dropdown = ttk.Combobox(scene_frame, textvariable=scene_command_var, values=dropdown_options)
+scene_command_dropdown.grid(row=3, column=1, padx=10, pady=5, sticky="ew")
+scene_command_dropdown.set(dropdown_options[0])  # Default value
+
 # Stayed back for hostage dropdown
 stayed_back_label = ttk.Label(scene_frame, text="Stayed back for hostage:")
-stayed_back_label.grid(row=3, column=0, padx=10, pady=5, sticky="w")
+stayed_back_label.grid(row=4, column=0, padx=10, pady=5, sticky="w")
 stayed_back_var = tk.StringVar()
 stayed_back_dropdown = ttk.Combobox(scene_frame, textvariable=stayed_back_var, values=dropdown_options)
-stayed_back_dropdown.grid(row=3, column=1, padx=10, pady=5, sticky="ew")
+stayed_back_dropdown.grid(row=4, column=1, padx=10, pady=5, sticky="ew")
 stayed_back_dropdown.set(dropdown_options[0])  # Default value
 
 # Frame for Chase Sequence
@@ -115,7 +124,13 @@ primary_label.grid(row=0, column=0, padx=10, pady=5, sticky="w")
 primary_var = tk.StringVar()
 primary_dropdown = ttk.Combobox(chase_frame, textvariable=primary_var, values=dropdown_options)
 primary_dropdown.grid(row=0, column=1, padx=10, pady=5, sticky="ew")
-primary_dropdown.set(dropdown_options[0])  # Default value
+primary_dropdown.set(dropdown_options[0])  # Default 
+primary_dropdown.config(width=35)
+##Primary Car
+primary_car_dropdown = ttk.Combobox(chase_frame, textvariable=primary_var, values=dropdown_car_options)
+primary_car_dropdown.grid(row=0, column=2, padx=10, pady=5, sticky="ew")
+primary_car_dropdown.set(dropdown_options[0])  # Default value
+primary_car_dropdown.config(width=35)
 
 # Secondary dropdown
 secondary_label = ttk.Label(chase_frame, text="Secondary:")
@@ -222,6 +237,7 @@ def generate_report():
     bank_value = bank_var.get() if type_value == "BANK" else store_var.get() if type_value == "STORE" else "JEWELLERY STORE"
     reporting_officer_value = reporting_officer_var.get()
     mdt_creator_value = mdt_creator_var.get()
+    scene_command_value = scene_command_var.get()
     negotiator_value = negotiator_var.get()
     stayed_back_value = stayed_back_var.get()
     primary_value = primary_var.get()
@@ -247,7 +263,7 @@ REPORTING OFFICER : {reporting_officer_value}
 
 SCENE ASSIGNMENT :
 MDT Creator: {mdt_creator_value}
-Scene Command: [ST-409] Sanjay Shekhawat 
+Scene Command: {scene_command_value}
 Negotiator: {negotiator_value}
 Stayed Back For Hostage: {stayed_back_value}
 
